@@ -1,0 +1,24 @@
+kb = {
+    "vertebrate": [["mammal", "A"], ["A"]],
+    "animal": [["vertebrate", "A"]],
+    "bird": [["vertebrate", "A", "flying", "A"]],
+    "mammal": [['"cat"']],
+    "vertebrate_fact": [['"duck"']],
+    "flying": [['"duck"']]
+}
+
+def ask(goal):
+    if goal in kb and any(len(r) == 1 for r in kb[goal]):
+        return True
+    for rule in kb.get(goal, []):
+        if all(prove(p) for p in rule[:-1]):
+            return True
+    return False
+
+def prove(symbol):
+    if symbol.startswith('"'):
+        return True
+    return ask(symbol)
+
+goal = input("Enter Goal: ")
+print("Proved" if ask(goal) else "Not Proved")
