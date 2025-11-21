@@ -1,0 +1,30 @@
+from collections import deque
+
+def water_jug():
+    visited = set()
+    q = deque([(0, 0)])
+    visited.add((0, 0))
+
+    while q:
+        a, b = q.popleft()
+        print(a, b)
+        if a == 2:
+            return
+
+        ops = [
+            (4, b), (a, 3),
+            (0, b), (a, 0)
+        ]
+
+        t = min(a, 3 - b)
+        ops.append((a - t, b + t))
+
+        t = min(b, 4 - a)
+        ops.append((a + t, b - t))
+
+        for s in ops:
+            if s not in visited:
+                visited.add(s)
+                q.append(s)
+
+water_jug()
