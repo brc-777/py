@@ -1,0 +1,21 @@
+% Ensure X, Y are not in conflict
+safe(_, []).
+safe(X/Y, [X1/Y1 | Rest]) :-
+    X =\= X1,
+    Y =\= Y1,
+    abs(X - X1) =\= abs(Y - Y1),
+    safe(X/Y, Rest).
+
+% Place N queens on board
+queens(0, _, []).
+queens(N, NMax, [X/Y | Rest]) :-
+    N > 0,
+    N1 is N - 1,
+    between(1, NMax, X),
+    between(1, NMax, Y),
+    queens(N1, NMax, Rest),
+    safe(X/Y, Rest).
+
+% Find one solution for 4 queens
+solve_4_queens(Solution) :-
+    queens(4, 4, Solution).
