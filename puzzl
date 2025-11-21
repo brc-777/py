@@ -1,0 +1,62 @@
+import heapq
+
+goal_state = "123456780"   # 0 represents the empty tile
+
+# Moves: up, down, left, right
+moves = {
+    0: [1, 3],
+    1: [0, 2, 4],
+    2: [1, 5],
+    3: [0, 4, 6],
+    4: [1, 3, 5, 7],
+    5: [2, 4, 8],
+    6: [3, 7],
+    7: [4, 6, 8],
+    8: [5, 7]
+}
+
+def heuristic(state):
+    """Manhattan distance"""
+    d = 0
+    for i, c in enumerate(state):
+        if c != "0":
+            goal = int(c) - 1
+            d += abs(i // 3 - goal // 3) + abs(i % 3 - goal % 3)
+    return d
+
+def solve(start):
+    pq = [(heuristic(start), start)]
+    visited = set()
+    parent = {start: None}
+
+    while pq:
+        _, state = heapq.heappop(pq)
+
+        if state == goal_state:
+            path = []
+            while state:
+                path.append(state)
+                state = parent[state]
+            return path[::-1]
+
+        visited.add(state)
+        zero = state.index("0")
+
+        for move in moves[zero]:
+            new_state = list(state)
+            new_state[zero], new_state[move] = new_state[move], new_state[zero]
+            new_state = "".join(new_state)
+
+            if new_state not in visited:
+                parent[new_state] = state
+                heapq.heappush(pq, (heuristic(new_state), new_state))
+
+# ---- MAIN ----
+start = input("Enter puzzle as 9 digits (use 0 for empty): ")
+solution = solve(start)
+
+print("\nSolution Steps:")
+for s in solution:
+    for i in range(0, 9, 3):
+        print(s[i:i+3])
+    print()
