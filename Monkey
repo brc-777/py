@@ -1,0 +1,17 @@
+monkey = "door"
+box = "window"
+banana = "middle"
+
+print("Monkey at:", monkey)
+print("Box at:", box)
+print("Banana at:", banana, "\n")
+
+monkey = box
+print("Monkey moves to box.")
+
+box = banana
+monkey = box
+print("Monkey pushes box under banana.")
+
+print("Monkey climbs box.")
+print("Monkey takes banana!")
