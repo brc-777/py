@@ -1,0 +1,42 @@
+import random, math
+
+tasks = 6
+slots = [0, 1, 2]
+
+def random_schedule():
+    return [random.choice(slots) for _ in range(tasks)]
+
+def cost(schedule):
+    c = 0
+    for s in slots:
+        if schedule.count(s) > 2:
+            c += (schedule.count(s) - 2) * 10
+    return c
+
+def neighbor(schedule):
+    new = schedule[:]
+    i = random.randint(0, tasks - 1)
+    new[i] = random.choice(slots)
+    return new
+
+def simulated_annealing():
+    T = 100
+    cur = random_schedule()
+    cur_cost = cost(cur)
+    best = cur[:]
+    best_cost = cur_cost
+
+    while T > 0.1:
+        nxt = neighbor(cur)
+        nxt_cost = cost(nxt)
+        d = nxt_cost - cur_cost
+        if d < 0 or random.random() < math.exp(-d / T):
+            cur, cur_cost = nxt, nxt_cost
+        if cur_cost < best_cost:
+            best, best_cost = cur[:], cur_cost
+        T *= 0.9
+    return best, best_cost
+
+best, best_cost = simulated_annealing()
+print("Best schedule:", best)
+print("Cost:", best_cost)
