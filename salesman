@@ -1,0 +1,38 @@
+import itertools
+
+# Distance matrix (symmetric)
+# Cities: A, B, C, D
+distances = {
+    ('A', 'B'): 10, ('B', 'A'): 10,
+    ('A', 'C'): 15, ('C', 'A'): 15,
+    ('A', 'D'): 20, ('D', 'A'): 20,
+    ('B', 'C'): 35, ('C', 'B'): 35,
+    ('B', 'D'): 25, ('D', 'B'): 25,
+    ('C', 'D'): 30, ('D', 'C'): 30
+}
+
+cities = ['A', 'B', 'C', 'D']
+start_city = 'A'
+
+def route_distance(route):
+    total = 0
+    for i in range(len(route) - 1):
+        total += distances[(route[i], route[i+1])]
+    total += distances[(route[-1], route[0])]  # Return to start
+    return total
+
+min_route = None
+min_distance = float('inf')
+
+# Generate all permutations excluding the start city
+for perm in itertools.permutations([c for c in cities if c != start_city]):
+    route = [start_city] + list(perm)
+    dist = route_distance(route)
+
+    if dist < min_distance:
+        min_distance = dist
+        min_route = route
+
+# Print results
+print("Shortest Route:", " -> ".join(min_route + [start_city]))
+print("Minimum Distance:", min_distance)
