@@ -1,0 +1,45 @@
+import heapq
+
+graph = {
+    'A': {'B': 1, 'C': 4},
+    'B': {'D': 3, 'E': 5},
+    'C': {'F': 2},
+    'D': {'F': 1, 'E': 1},
+    'E': {'F': 2},
+    'F': {}
+}
+
+h = {'A':5, 'B':4, 'C':2, 'D':1, 'E':1, 'F':0}
+
+def astar(start, goal):
+    open_set = [(h[start], start)]
+    g = {n: float('inf') for n in graph}
+    g[start] = 0
+    parent = {}
+    expanded = []
+
+    while open_set:
+        f, current = heapq.heappop(open_set)
+        expanded.append(current)
+        if current == goal:
+            break
+
+        for nxt, cost in graph[current].items():
+            new_g = g[current] + cost
+            if new_g < g[nxt]:
+                g[nxt] = new_g
+                parent[nxt] = current
+                heapq.heappush(open_set, (new_g + h[nxt], nxt))
+
+    path = [goal]
+    while path[-1] in parent:
+        path.append(parent[path[-1]])
+    path.reverse()
+
+    return expanded, path, g[goal]
+
+expanded, path, cost = astar('A', 'F')
+
+print("Expanded:", expanded)
+print("Path:", path)
+print("Cost:", cost)
