@@ -1,0 +1,20 @@
+% Facts
+student(john).
+student(sara).
+
+teacher(mr_smith).
+teacher(ms_jones).
+
+subject(math, m101).
+subject(english, e202).
+
+% Question templates
+question("______ is a student.").
+question("______ is a teacher.").
+question("The subject code for ______ is ______.").
+question("______ teaches ______.").
+
+% Generate a question
+ask_question :-
+    question(Q),
+    write(Q), nl.
