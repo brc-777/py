@@ -1,0 +1,14 @@
+distance(mercury, 58).
+distance(venus, 108).
+distance(earth, 150).
+distance(jupiter, 778).
+
+mass(mercury, 0.055).
+
+orbit(saturn, 10759).
+day(saturn, 11).
+
+distance(P1, P2, D) :-
+    distance(P1, A),
+    distance(P2, B),
+    D is abs(A - B).
