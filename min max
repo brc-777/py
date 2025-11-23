@@ -1,0 +1,14 @@
+def minimax(max_turn, l):
+    if len(l) == 1:
+        return l[0]
+    m = len(l) // 2
+    a = minimax(not max_turn, l[:m])
+    b = minimax(not max_turn, l[m:])
+    return max(a, b) if max_turn else min(a, b)
+
+L = list(map(int, input("Enter 4 leaf values: ").split()))
+left = minimax(False, L[:2])
+right = minimax(False, L[2:])
+print("Left =", left)
+print("Right =", right)
+print("Best move:", "LEFT" if left > right else "RIGHT")
